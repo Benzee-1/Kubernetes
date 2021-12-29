@@ -1,0 +1,43 @@
+{% set priority = 150 %}
+{% set hosts = groups['haproxymembers'] | first %}
+global_defs {
+    notification_email {
+        root@localhost
+    }
+
+}
+vrrp_track_process check_haproxy {
+    process "haproxy"
+    weight 50
+    quorum 1
+    delay 2000
+}
+vrrp_instance {{ haproxy_instance }}IPv4 {
+    @{{ hostvars[hosts].ansible_hostname }} state MASTER
+    @^{{ hostvars[hosts].ansible_hostname }} state BACKUP
+    interface {{ ethinsterface }}
+    virtual_router_id 50
+{% for node in groups['haproxymembers'] %}
+     priority {{ priority - loop.index0 * 10 }}
+{% endfor %}
+    advert_int 1
+    authentication {
+        auth_type PASS
+        auth_pass {{ keep_passwd }}
+    }
+{% for node in groups['haproxymembers'] %}
+    @{{ hostvars[node].ansible_hostname }} unicast_src_ip {{ hostvars[node].ansible_default_ipv4.address }}
+{% endfor %}
+    unicast_peer {
+{% for node in groups['haproxymembers'] %}
+        @^{{ hostvars[node].ansible_hostname }} {{ hostvars[node].ansible_default_ipv4.address }}
+{% endfor %}
+    }
+    virtual_ipaddress {
+        {{ kubemastervip }}
+    }
+    track_process {
+        check_haproxy
+    }
+}
+

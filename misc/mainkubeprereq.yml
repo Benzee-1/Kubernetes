@@ -1,0 +1,33 @@
+---
+
+
+- name: Disable SWAP since kubernetes can't work with swap enabled (1/2)
+  shell: |
+    swapoff -a
+  #when: kubernetes_installed is changed
+
+- name: Check swap is on ?
+  shell: "/usr/sbin/swapon --show | wc -l"
+  register: result
+
+- debug: msg="{{result.stdout}}"
+
+- name: Create flag file when swap is on
+  shell: "/usr/bin/touch /tmp/swap.enabled"
+  when: result.stdout != 0
+
+- stat:
+  path: /tmp/swap.enabled
+  register: result1
+
+- name: Disable SWAP in fstab since kubernetes can't work with swap enabled (2/2)
+  replace:
+    path: /etc/fstab
+    regexp: '^([^#].*?\sswap\s+sw\s+.*)$'
+    replace: '# \1'
+  when: result1.stat.exists == true
+    
+- name: Reboot a Linux machine 
+  reboot:
+    test_command: uptime
+  when: result1.stat.exists == true

@@ -1,0 +1,1 @@
+etcdctl --cert-file=client.pem  --key-file=client-key.pem --ca-file=ca.pem --endpoints=https://10.0.2.31:2379,https://10.0.2.32:2379  member list

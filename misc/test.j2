@@ -1,0 +1,6 @@
+#jinja2: lstrip_blocks: "True"
+#jinja2: trim_blocks: "True"
+--initial-cluster=
+{%- for host in groups['kubemasters'] -%}
+  {{ hostvars[host]['ansible_hostname'] }}=http://{{ hostvars[host]['ansible_enp0s3']['ipv4']['address'] }}:2380{{ "," if not loop.last else "" }}
+{%- endfor %}

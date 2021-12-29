@@ -1,0 +1,24 @@
+version: '2'
+services:
+  etcd:
+    image: quay.io/coreos/etcd
+    container_name: etcd
+    hostname: etcd
+    volumes:
+    - /app/etcd/ssl:/etc/ssl/certs
+    - /app/etcd/etcd:/var/lib/etcd
+    ports:
+    - 4001:4001
+    - 2380:2380
+    - 2379:2379
+    restart: always
+{% for host in hosts %}
+    command: ["sh", "-c", "etcd --name={{ host }} \
+      --listen-client-urls=http://0.0.0.0:2379,http://0.0.0.0:4001 \
+      --advertise-client-urls=http://0.0.0.0:2379,http://0.0.0.0:4001 \
+      --listen-peer-urls=http://0.0.0.0:2380 \
+      --initial-advertise-peer-urls=http://10.0.2.31:2380 \
+      --initial-cluster=kubem1=http://10.0.2.31:2380,kubem2=http://10.0.2.32:2380 \
+      --initial-cluster-token=T14789O6321K4789E89632N \
+      --initial-cluster-state=new" ]
+{% endfor %}

@@ -1,0 +1,16 @@
+---
+- name: Test template /app/keepalived.conf
+  template: src=keepalived.j2 dest=/app/keepalived.conf
+
+- name: Install haproxy on haprxy members
+  apt:
+    name: haproxy
+    state: present 
+
+- name: Copy haproxy conf file
+  template: src=haproxy.j2 dest=/etc/haproxy/haproxy.cfg
+
+- name: Restart haproxy service
+  systemd: 
+     name: haproxy
+     state: restarted

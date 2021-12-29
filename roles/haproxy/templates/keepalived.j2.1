@@ -1,0 +1,45 @@
+global_defs {
+  notification_email {
+  }
+  router_id LVS_DEVEL
+  vrrp_skip_check_adv_addr
+  vrrp_garp_interval 0
+  vrrp_gna_interval 0
+}
+   
+vrrp_script chk_haproxy {
+  script "killall -0 haproxy"
+  interval 2
+  weight 2
+}
+   
+vrrp_instance haproxy-vip {
+  state BACKUP
+  priority 100
+  interface eth0                       # Network card
+  virtual_router_id 60
+  advert_int 1
+  authentication {
+    auth_type PASS
+    auth_pass 23a1dd6527cc347
+  }
+  unicast_src_ip {{ ansible_default_ipv4.address }}      # The IP address of this machine
+  unicast_peer {
+  {% for host in groups['haproxymembers'] %}
+    {% set currentIP = {{ ansible_default_ipv4.address }} %}
+    {% set otherIP = {{ hostvars[host]['ansible_enp0s3']['ipv4']['address'] }} %}
+    {% if otherIP != currentIP %}
+    {{ hostvars[host]['ansible_enp0s3']['ipv4']['address'] }}
+    {% endif %}
+  {% endfor %}              
+  }
+   
+  virtual_ipaddress {
+   {{ kubemastervip }}/24                  # The VIP address
+  }
+   
+  track_script {
+    chk_haproxy
+  }
+}
+

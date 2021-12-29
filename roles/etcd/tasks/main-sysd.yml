@@ -1,0 +1,30 @@
+---
+- name: Test template ip des hosts
+  template: src=docker-compose-etcd.j2 dest=/app/docker-compose-etcd.yml
+
+- name: Copy etcd.service to /etc/systemd/system
+  copy: 
+    src: etcd.service
+    dest: /etc/systemd/system/etcd.service
+
+- name: Copy etcd.sh to hosts
+  copy: 
+    src: etcd.sh
+    dest: /app/etcd.sh
+    mode: '755'
+
+- name: enable service etcd
+  systemd:
+    name: etcd.service
+    enabled: yes
+
+- name:  relaod systemd
+  systemd:
+    daemon_reload: yes
+
+- name: start etcd service
+  systemd:
+    state: started
+    name: etcd.service
+
+# tasks file for roles/etcd

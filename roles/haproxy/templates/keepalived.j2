@@ -1,0 +1,47 @@
+{% set priority = 150 %}
+{% set hosts = groups['haproxymembers'] | first %}
+global_defs {
+    notification_email {
+        root@localhost
+    }
+}
+vrrp_script check_haproxy {
+     script "/usr/bin/curl -k https://10.0.2.32:6443"
+     interval 3
+     timeout 9
+     fall 2
+     rise 2
+}
+vrrp_instance {{ haproxy_instance }}IPv4 {
+{% if ansible_hostname == "kubem1" %}
+    state  MASTER
+    priority 150
+{% elif ansible_hostname == "kubem2" %}
+    state  BACKUP
+    priority 145
+{% endif %}
+    interface {{ ethinsterface }}
+    virtual_router_id 50
+    advert_int 1
+    authentication {
+        auth_type PASS
+        auth_pass {{ keep_passwd }}
+    }
+    unicast_src_ip {{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}
+    unicast_peer {
+{% for node in groups['haproxymembers'] %}
+    {% set currentIP = hostvars[inventory_hostname]['ansible_default_ipv4']['address'] %}
+    {% set variableIP = hostvars[node].ansible_default_ipv4.address %}
+    {% if currentIP != variableIP %}
+    {{ hostvars[node].ansible_default_ipv4.address }}
+    {% endif %}
+{% endfor %}
+    }
+    virtual_ipaddress {
+        {{ kubemastervip }}
+    }
+track_script {
+        check_haproxy
+    }
+}
+

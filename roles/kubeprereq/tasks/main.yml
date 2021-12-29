@@ -1,0 +1,79 @@
+---
+
+- name: Check swap is on ?
+  shell: "/usr/sbin/swapon --show | wc -l"
+  register: result
+
+- debug: msg="{{result.stdout}}"
+
+- name: Create flag file when swap is on
+  shell: "/usr/bin/touch /tmp/swap.enabled"
+  when: result.stdout != "0"
+
+- stat:
+    path: /tmp/swap.enabled
+  register: result1
+
+- name: Disable SWAP since kubernetes can't work with swap enabled (1/2)
+  shell: |
+    swapoff -a
+  when: result1.stat.exists == true
+
+- name: Disable SWAP in fstab since kubernetes can't work with swap enabled (2/2)
+  replace:
+    path: /etc/fstab
+    regexp: '^([^#].*?\sswap\s+sw\s+.*)$'
+    replace: '# \1'
+  when: result1.stat.exists == true
+    
+- name: Reboot a Linux machine 
+  reboot:
+    test_command: uptime
+  when: result1.stat.exists == true
+
+- name: Add Kubeadm GPG apt Key
+  apt_key:
+    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+    state: present
+
+- name: Add Kubernetes Repository
+  apt_repository:
+    repo: deb https://apt.kubernetes.io/ kubernetes-xenial main
+    state: present
+
+- name: Install kubeadm, kubelet, kubectl
+  apt:
+    update_cache: yes
+    name: "{{ item }}"
+    state: latest
+  loop:
+      - 'kubeadm'
+      - 'kubelet'
+      - 'kubectl'
+- name: Create directories /app/kubernetes/pki, /app/kubernetes/etcd/{etcd,ssl}
+  file:
+    path: "{{ item }}"
+    state: directory
+  loop: "{{ directories_to_create }}"
+- name: Copy kubernetes.pem, kubernetes-key.pem,ca.pem dans /etc/kubernetes/pki (*)
+  copy:
+     src: "{{ item }}"
+     dest: /etc/kubernetes/pki/
+  with_items: 
+      - kubernetes.pem
+      - kubernetes-key.pem
+      - ca.pem  
+
+- name: keepalive installation
+  apt:
+    update_cache: yes
+    name: keepalived
+    state: latest
+- name: Start keepalived service
+  service: 
+     name: keepalived
+     state: started
+     enabled: true
+
+- name: Copy config.yml to run kubeadm init command
+  template: src=config-kubeadm.j2 dest=/app/config.yml

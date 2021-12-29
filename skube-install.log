@@ -1,0 +1,57 @@
+Installation des VM Ubuntu 20.04
+Mot de passe root
+creation des clés ssh pour tous les serveurs skubem1, skubem2 et skubew1 pour le compte root
+ssh-keygen -o -a 100 -t ed25519 -f ~/.ssh/id_ed25519 -C "sadmin@skubew1"
+copier la clé publique du compte root de la machine ansible dans authorized_keys de tous les serveurs
+creation des clés ssh pour tous les serveurs skubem1, skubem2 et skubew1 pour le compte sadmin
+
+valider l'accès avec ssh root@skubem1 depuis la machine ansible
+
+Renseigner les ip et les noms des machines dans /etc/hots
+
+créer le fichier hosts.skube pour ansible :
+[all]
+10.118.1.9 ansible_connexion=ssh  ansible_user=root
+10.118.1.8 ansible_connexion=ssh  ansible_user=root
+10.118.1.12 ansible_connexion=ssh  ansible_user=root
+
+[kubemasters]
+10.118.1.9 ansible_connexion=ssh  ansible_user=root
+10.118.1.8 ansible_connexion=ssh  ansible_user=root
+
+[kubeworkers]
+10.118.1.12 ansible_connexion=ssh  ansible_user=root
+-----------
+
+Faire un ping Ansible pour vérifier la connexion de la machine ansible aux machines
+
+root@ubuntu2:/home/sadmin/works/ansible/kubernetes# ansible -i hosts.skube -m ping all
+10.118.1.8 | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+10.118.1.12 | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+10.118.1.9 | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+
+
+-----------------
+
+Appliquer le role common sur les machines:
+
+
+

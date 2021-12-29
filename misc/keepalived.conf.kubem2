@@ -1,0 +1,35 @@
+global_defs {
+    router_id LVS_k8s
+    }
+    
+    vrrp_script CheckK8sMaster {
+        script "/usr/bin/curl -k https://10.0.2.32:6443"
+        interval 3
+        timeout 9
+        fall 2
+        rise 2
+    }
+    
+    vrrp_instance VI_1 {
+        state BACKUP
+        interface enp0s3
+        virtual_router_id 61
+        priority 101
+        advert_int 1
+        mcast_src_ip 10.0.2.32
+        nopreempt
+        authentication {
+            auth_type PASS
+            auth_pass KEEPALIVED_AUTH_PASS
+        }
+        unicast_peer {
+        10.0.2.31
+        } 
+        virtual_ipaddress {
+            10.0.2.35/24
+        }
+        track_script {
+            CheckK8sMaster
+        }
+    
+    }

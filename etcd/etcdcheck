@@ -1,0 +1,14 @@
+echo "Node 10.0.2.31 ..."
+ETCDCTL_API=3 etcdctl --endpoints=http://10.0.2.31:2379 endpoint health
+ETCDCTL_API=3 etcdctl --endpoints=http://10.0.2.31:2379 member list
+#ETCDCTL_API=3 etcdctl --endpoints=http://10.0.2.31:2379 check perf
+
+echo "Node 10.0.2.32 ..."
+ETCDCTL_API=3 etcdctl --endpoints=http://10.0.2.32:2379 endpoint health
+ETCDCTL_API=3 etcdctl --endpoints=http://10.0.2.32:2379 member list
+#ETCDCTL_API=3 etcdctl --endpoints=http://10.0.2.32:2379 check perf
+
+ETCDCTL_API=3 etcdctl --endpoints=http://10.0.2.15:2379 endpoint health
+ETCDCTL_API=3 etcdctl --endpoints=http://10.0.2.15:2379 member list
+
+

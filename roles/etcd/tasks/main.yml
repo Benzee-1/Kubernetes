@@ -1,0 +1,14 @@
+---
+- name: Test template ip des hosts
+  template: src=docker-compose-etcd.j2 dest=/app/docker-compose-etcd.yml
+
+- name: Copy etcd.sh to hosts
+  copy: 
+    src: etcd.sh
+    dest: /app/etcd.sh
+    mode: '755'
+
+- name: start etcd services
+  command: /app/etcd.sh start
+
+# tasks file for roles/etcd

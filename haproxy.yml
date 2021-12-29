@@ -1,0 +1,5 @@
+---
+- hosts: haproxymembers
+  roles:
+    - haproxy
+

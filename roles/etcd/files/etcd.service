@@ -1,0 +1,16 @@
+[Unit]
+Description=Manage etcd service (Kubernetes)
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=on-failure
+RestartSec=1
+User=root
+ExecStart=/app/etcd.sh start
+ExecStop=/app/etcd.sh stop
+RemainAfterExit=yes
+[Install]
+WantedBy=multi-user.target
+

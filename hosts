@@ -1,0 +1,25 @@
+[all]
+10.0.2.31 ansible_connexion=ssh  ansible_user=root
+10.0.2.32 ansible_connexion=ssh  ansible_user=root
+10.0.2.41 ansible_connexion=ssh  ansible_user=root
+
+[kubenodes]
+10.0.2.31 ansible_connexion=ssh  ansible_user=root
+10.0.2.32 ansible_connexion=ssh  ansible_user=root
+10.0.2.41 ansible_connexion=ssh  ansible_user=root
+
+[kubemasters]
+10.0.2.31 ansible_connexion=ssh  ansible_user=root
+10.0.2.32 ansible_connexion=ssh  ansible_user=root
+
+[kubeworkers]
+10.0.2.41 ansible_connexion=ssh  ansible_user=root
+
+[etcdmembers]
+10.0.2.31 ansible_connexion=ssh  ansible_user=root
+10.0.2.32 ansible_connexion=ssh  ansible_user=root
+10.0.2.15 ansible_connexion=ssh  ansible_user=root
+
+[haproxymembers]
+10.0.2.31 ansible_connexion=ssh  ansible_user=root
+10.0.2.32 ansible_connexion=ssh  ansible_user=root

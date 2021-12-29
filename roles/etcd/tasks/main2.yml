@@ -1,0 +1,13 @@
+---
+- name: Copy docker-compose.yml file of etcd service
+  copy:
+     src: docker-compose-nodex.yml
+     dest: /app
+
+- name: Copy etcd.service to /etc/systemd/system/
+  copy: 
+     src: etcd.service.x
+     dest: /etc/systemd/system
+
+
+# tasks file for roles/etcd

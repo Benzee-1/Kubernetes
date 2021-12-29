@@ -1,0 +1,27 @@
+{
+    "CN": "kubernetes",
+    "hosts": [
+        "kubem",
+	"kubem1",
+	"kubem2",
+        "10.0.2.31",
+	"10.0.2.32",
+	"10.0.2.35",
+	"127.0.0.1"
+    ],
+    "key": {
+        "algo": "ecdsa",
+        "size": 256
+    },
+    "names": [
+        {
+         "C": "FR",
+         "L": "Paris",
+         "O": "MyCorp",
+         "OU": "MyIT",
+         "ST": "IDF"
+
+	}
+    ]
+}
+

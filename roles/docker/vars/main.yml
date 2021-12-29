@@ -1,0 +1,3 @@
+---
+default_container_image: ubuntu
+# vars file for roles/docker

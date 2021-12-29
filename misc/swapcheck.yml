@@ -1,0 +1,19 @@
+---
+- hosts: all
+  serial: 1
+  tasks:
+  - name: Check swap
+    shell: "/usr/sbin/swapon --show | wc -l"
+    register: result
+
+  - debug: msg="{{result.stdout}}"
+
+  - name: Create flag file when swap is on
+    shell: "/usr/bin/touch /tmp/swap.enabled"
+    when: result.stdout != "0"
+
+  - stat:
+      path: /tmp/swap.enabled
+    register: result1
+
+  - debug: msg="{{result1}}"

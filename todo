@@ -1,0 +1,42 @@
+Done : Create /app/etcd/{etcd,ssl} on all nodes
+Done: Create /app/kubernetes/ssl on all nodes
+Done: create : kubernetes.pem, kubernetes-key.pem, ca.pem
+Done: Copy these certs vers /etc/kubernetes/pki
+Todo: autocreation of docker-compose.yam for etcd cluster j2
+
+Done: useradd -r -s /sbin/nologin -g keepalived_script -M keepalived_script
+Todo: manage keepalived.conf
+Check
+config HA of apiserver 
+
+Done:  Init apiserver  : Run kubeadm init on kubem1
+
+scp -r /etc/kubernetes/pki sadmin@kubem1:/home/sadmin
+
+Done: rm /home/sadmin/pki/apiserver.*
+Done: cp /home/sadmin/pki/* /etc/kubernetes/pki
+
+Done :kubectl apply -f https://docs.projectcalico.org/v3.21/manifests/calico.yaml
+
+TODO : create /etc/systemd/system/etcd.service
+[Unit]
+Description=Manage etcd service (Kubernetes)
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=root
+ExecStart=/usr/local/bin/docker-compose -f /app/docker-compose-etcd-cluster-node1-clair.yml up -d
+
+[Install]
+WantedBy=multi-user.target
+
+run: systemctl daemon-reload
+run: systemctl status etcd
+run: systemctl start etcd
+
+
+

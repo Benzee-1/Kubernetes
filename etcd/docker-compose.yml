@@ -1,0 +1,26 @@
+version: '2'
+services:
+  etcd:
+    image: gcr.io/google_containers/etcd-amd64:latest
+    container_name: etcd
+    hostname: etcd
+    volumes:
+    - /opt/etcd/ssl:/etc/ssl/certs
+    - /opt/etcd/etcd:/var/lib/etcd
+    ports:
+    - 4001:4001
+    - 2380:2380
+    - 2379:2379
+    restart: always
+    command: ["sh", "-c", "etcd --name=kubem1 \
+      --advertise-client-urls=http://10.0.2.31:2379,http://10.0.2.31:4001 \
+      --listen-client-urls=http://0.0.0.0:2379,http://0.0.0.0:4001 \
+      --initial-advertise-peer-urls=http://10.0.2.31:2380 \
+      --listen-peer-urls=http://0.0.0.0:2380 \
+      --initial-cluster-token=9477af68bbee1b9ae037d6fd9e7efefd \
+      --initial-cluster=kubem1=http://10.0.2.31:2380,kubem2=http://10.0.2.32:2380 \
+      --initial-cluster-state=new \
+      --auto-tls \
+      --peer-auto-tls \
+      --data-dir=/var/lib/etcd"]
+

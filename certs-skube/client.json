@@ -1,0 +1,19 @@
+{
+    "CN": "client",
+    "hosts": [""],
+    "key": {
+        "algo": "ecdsa",
+        "size": 256
+    },
+    "names": [
+        {
+	 "C": "FR",
+         "L": "Paris",
+         "O": "MyCorp",
+         "OU": "MyIT",
+         "ST": "IDF"
+
+        }
+    ]
+}
+
