@@ -38,6 +38,18 @@ run: systemctl daemon-reload
 run: systemctl status etcd
 run: systemctl start etcd
 
+Install configure keepalived
+Install configure haproxy
+
+On the first Master:
+kubeadm init --config=config.yaml
+
+Copy pki dir to the other masters
+scp -r /etc/kubernetes/pki root@kubem2:~
+scp -r /etc/kubernetes/pki root@kubem3:~
+
+
+
 # Adding this line to check github push syncro
 # Second test
 

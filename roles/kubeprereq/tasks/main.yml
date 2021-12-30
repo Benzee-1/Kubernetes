@@ -1,4 +1,9 @@
 ---
+- name: Activate packet forwarding
+  command: /usr/bin/sed -i 's/^#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1/' /etc/sysctl.d/99-sysctl.conf
+
+- name: Relaod sysctl
+  command: /usr/sbin/sysctl --quiet --system
 
 - name: Check swap is on ?
   shell: "/usr/sbin/swapon --show | wc -l"
@@ -25,8 +30,8 @@
     regexp: '^([^#].*?\sswap\s+sw\s+.*)$'
     replace: '# \1'
   when: result1.stat.exists == true
-    
-- name: Reboot a Linux machine 
+
+- name: Reboot a Linux machine
   reboot:
     test_command: uptime
   when: result1.stat.exists == true
@@ -50,30 +55,21 @@
       - 'kubeadm'
       - 'kubelet'
       - 'kubectl'
+
 - name: Create directories /app/kubernetes/pki, /app/kubernetes/etcd/{etcd,ssl}
   file:
     path: "{{ item }}"
     state: directory
   loop: "{{ directories_to_create }}"
+
 - name: Copy kubernetes.pem, kubernetes-key.pem,ca.pem dans /etc/kubernetes/pki (*)
   copy:
      src: "{{ item }}"
      dest: /etc/kubernetes/pki/
-  with_items: 
+  with_items:
       - kubernetes.pem
       - kubernetes-key.pem
-      - ca.pem  
-
-- name: keepalive installation
-  apt:
-    update_cache: yes
-    name: keepalived
-    state: latest
-- name: Start keepalived service
-  service: 
-     name: keepalived
-     state: started
-     enabled: true
+      - ca.pem
 
 - name: Copy config.yml to run kubeadm init command
   template: src=config-kubeadm.j2 dest=/app/config.yml

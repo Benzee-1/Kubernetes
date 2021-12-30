@@ -10,3 +10,7 @@
 - hosts: all
   roles:
     - kubeprereq
+
+- hosts: haproxymembers
+  roles:
+    - haproxy

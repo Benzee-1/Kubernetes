@@ -1,5 +1,5 @@
 ---
-- hosts: kubemasters
+- hosts: kubenodes
   roles:
     - kubeprereq
 

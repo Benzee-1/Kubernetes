@@ -1,16 +1,29 @@
 ---
+- name: keepalived installation
+  apt:
+    update_cache: yes
+    name: keepalived
+    state: latest
+    
+- name: Start keepalived service
+  service:
+     name: keepalived
+     state: started
+     enabled: true
+     
 - name: Test template /app/keepalived.conf
   template: src=keepalived.j2 dest=/app/keepalived.conf
 
 - name: Install haproxy on haprxy members
   apt:
     name: haproxy
-    state: present 
+    state: present
 
 - name: Copy haproxy conf file
   template: src=haproxy.j2 dest=/etc/haproxy/haproxy.cfg
 
 - name: Restart haproxy service
-  systemd: 
+  systemd:
      name: haproxy
      state: restarted
+
