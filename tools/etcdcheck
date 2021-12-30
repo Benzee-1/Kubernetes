@@ -1,3 +1,13 @@
+etcdmembers=(10.0.2.31 10.0.2.32 10.0.2.15)
+
+for etcd in ${etcdmembers[@]}; do
+echo "Etcd member : " $etcd
+ETCDCTL_API=3 etcdctl --endpoints=http://${etcd}:2379 endpoint health
+ETCDCTL_API=3 etcdctl --endpoints=http://${etcd}:2379 member list
+#ETCDCTL_API=3 etcdctl --endpoints=http://${etcd}:2379 check perf
+done
+exit
+
 echo "Node 10.0.2.31 ..."
 ETCDCTL_API=3 etcdctl --endpoints=http://10.0.2.31:2379 endpoint health
 ETCDCTL_API=3 etcdctl --endpoints=http://10.0.2.31:2379 member list

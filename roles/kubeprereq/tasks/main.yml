@@ -50,11 +50,10 @@
   apt:
     update_cache: yes
     name: "{{ item }}"
-    state: latest
   loop:
-      - 'kubeadm'
-      - 'kubelet'
-      - 'kubectl'
+      - kubeadm
+      - kubelet
+      - kubectl
 
 - name: Create directories /app/kubernetes/pki, /app/kubernetes/etcd/{etcd,ssl}
   file:
@@ -67,9 +66,16 @@
      src: "{{ item }}"
      dest: /etc/kubernetes/pki/
   with_items:
-      - kubernetes.pem
-      - kubernetes-key.pem
+      - ca-key.pem
       - ca.pem
+
+- name: kubelet reconfggure, replace cgroupDriver systemd by cgroupDriver cgroupfs
+  command: /usr/bin/sed -i 's/cgroupDriver":" systemd/cgroupDriver":" cgroupfs/g' /var/lib/kubelet/config.yaml
+
+- name: restart kubelet service
+  systemd:
+     name: kubelet.service
+     state: restarted
 
 - name: Copy config.yml to run kubeadm init command
   template: src=config-kubeadm.j2 dest=/app/config.yml

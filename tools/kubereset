@@ -1,0 +1,4 @@
+kubeadm reset
+apt-get purge kubeadm kubectl kubelet kubernetes-cni kube*
+apt-get autoremove
+rm -rf ~/.kube

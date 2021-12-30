@@ -5,7 +5,7 @@ directories_to_create:
    - /app/etcd/ssl
 
 ethinsterface: enp0s3
-kubemastervip: 10.0.2.35
+#kubemastervip: 10.0.2.35
 keep_passwd: 23a1dd6527cc347
 haproxy_instance: haproxy_apiserver
 kubemaster:

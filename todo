@@ -41,6 +41,7 @@ run: systemctl start etcd
 Install configure keepalived
 Install configure haproxy
 
+Copy ca.pem et ca-key.pem to masters : /etc/kubernetes/pki
 On the first Master:
 kubeadm init --config=config.yaml
 

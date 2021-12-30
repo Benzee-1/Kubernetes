@@ -2,7 +2,7 @@ apiVersion: kubeadm.k8s.io/v1beta2
 kind: ClusterConfiguration
 kubernetesVersion: "v1.23.1"
 certificatesDir: "/etc/kubernetes/pki"
-advertiseAddress: "10.0.2.31"
+advertiseAddress: "{{ kubemastervip }}"
 controlPlaneEndpoint: "10.0.2.35:6444"
 etcd:
   external:
