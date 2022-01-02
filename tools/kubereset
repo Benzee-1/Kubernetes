@@ -1,4 +1,22 @@
-kubeadm reset
-apt-get purge kubeadm kubectl kubelet kubernetes-cni kube*
-apt-get autoremove
-rm -rf ~/.kube
+for host in kubem1 kubem2 kubew1
+do
+echo "========== $host ==========="
+ssh root@${host} systemctl stop kubelet
+ssh root@${host} apt-get -y purge kubeadm kubectl kubelet kubernetes-cni kube*
+ssh root@${host} apt-get -y autoremove
+ssh root@${host} kubeadm reset --force --cri-socket=/var/run/docker/docker.sock
+ssh root@${host} systemctl restart kubelet 
+ssh root@${host} rm -rf ~/.kube
+ssh root@${host} rm -r -f /etc/kubernetes/* /var/lib/kubelet/*
+done
+
+echo "====== Check kube packages ========"
+
+for host in kubem1 kubem2 kubew1
+do 
+echo "========== $host ==========="
+ssh root@${host} apt list |grep kube 
+done
+
+docker stop $(docker ps -a|grep kube |awk '{print $1}') ; docker rm $(docker ps -a|grep kube |awk '{print $1}')
+

@@ -1,3 +1,4 @@
+---
 apiVersion: kubeadm.k8s.io/v1beta2
 kind: ClusterConfiguration
 kubernetesVersion: "{{ kubernetes_version }}"
@@ -20,4 +21,9 @@ etcd:
 networking:
   podSubnet: "10.100.0.0/24"
 apiServerExtraArgs:
-  apiserver-count: "2"
+  apiserver-count: "{{ apiservercount }}"
+
+---
+kind: KubeletConfiguration
+apiVersion: kubelet.config.k8s.io/v1beta1
+cgroupDriver: systemd

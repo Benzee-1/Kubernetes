@@ -1,4 +1,10 @@
 ---
 # Variables here are applicable to all host groups
-kubernetes_version: "1.23.1
+kubernetes_version: 1.21.8
+kube_packages:
+    - kubeadm={{ kubernetes_version }}-00
+    - kubelet={{ kubernetes_version }}-00
+    - kubectl={{ kubernetes_version }}-00
 kubemastervip: 10.0.2.35
+apiservercount: 2
+nodeworkdir: /app

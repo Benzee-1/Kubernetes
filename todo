@@ -43,6 +43,10 @@ Install configure haproxy
 
 Copy ca.pem et ca-key.pem to masters : /etc/kubernetes/pki
 On the first Master:
+run
+kubeadm init --config=config.yaml
+Copy /etc/kubernetes/pki from kubem1 to kubem2
+run 
 kubeadm init --config=config.yaml
 
 Copy pki dir to the other masters

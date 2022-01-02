@@ -3,12 +3,14 @@
   apt: 
     name: "*" 
     state: latest
+
 - name: Install aptitude using apt
   apt: 
     name: aptitude 
     state: latest 
     update_cache: yes 
     force_apt_get: yes
+
 - name: Install required system packages
   apt: 
     name: "{{ item }}" 
@@ -22,12 +24,19 @@
       - 'python3-pip'
       - 'virtualenv'
       - 'python3-setuptools'
+
 - name: Install Chrony
   apt:
     name: chrony
     state: latest
+
 - name: enable chrony             
   systemd:
     name: chrony.service
     state: started
     enabled: yes
+
+- name: Create node work dir (global var  nodeworkdir)
+  file:
+    path: "{{ nodeworkdir }}"
+    state: directory

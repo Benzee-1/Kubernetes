@@ -1,0 +1,18 @@
+---
+- hosts: 10.0.2.31
+  tasks:
+  - name: Display packages name
+    debug:
+      msg: "{{ item }}={{ kubernetes_version }}-00"      
+    loop: 
+      - kubeadm
+      - kubelet
+      - kubectl  
+  - name: Test install  kubectl
+    apt:
+      update_cache: yes
+      name: "{{ item }}={{ kubernetes_version }}-00"
+    loop:
+      - kubectl
+      - kubelet
+      - kubeadm

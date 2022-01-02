@@ -55,10 +55,12 @@
 
 - name: Install kubeadm, kubelet, kubectl , packages version "{{ item }}={{ kubernetes_version }}-00"
   apt:
-    name:
-       - kubeadm=1.21.8-00
-       - kubelet=1.21.8-00
-       - kubectl=1.21.8-00
+    update_cache: yes
+    name: "{{ item }}"
+  loop:
+      - kubeadm=1.21.8-00
+      - kubelet=1.21.8-00
+      - kubectl=1.21.8-00
 
 - name: Create directories /app/kubernetes/pki, /app/kubernetes/etcd/{etcd,ssl}
   file:
