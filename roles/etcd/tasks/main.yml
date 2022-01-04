@@ -1,9 +1,26 @@
 ---
-- name: Test template ip des hosts
-  template: src=docker-compose-etcd.j2 dest=/app/docker-compose-etcd.yml
+- name: Create /app/etcd/{etcd,ssl}
+  file:
+    path: "## item }}"       
+    state: directory
+  with_items: 
+  - /app/etcd
+  - /app/etcd/etcd
+  - /app/etcd/ssl
+
+- name: Install Docker Compose
+  get_url:
+    url: "{{ docker_compose_url }}"
+    dest: /usr/local/bin/docker-compose
+    mode: u+x,g+x,o+x
+
+- name: Copy docker-compose conf file to etcd members 
+  template: 
+    src: docker-compose-etcd.j2 
+    dest: /app/docker-compose-etcd.yml
 
 - name: Copy etcd.sh to hosts
-  copy: 
+  copy:
     src: etcd.sh
     dest: /app/etcd.sh
     mode: '755'

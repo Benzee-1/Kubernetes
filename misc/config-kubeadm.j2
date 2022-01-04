@@ -3,22 +3,23 @@ apiVersion: kubeadm.k8s.io/v1beta2
 kind: ClusterConfiguration
 kubernetesVersion: "{{ kubernetes_version }}"
 apiServerCertSANs:
-{% for node in groups['kubemasters'] %}
-- {{ hostvars[node].ansible_default_ipv4.address }}
-- {{ hostvars[node]["ansible_hostname"] }}
-{% endfor %}
-- skubem
+- 10.0.2.31
+- 10.0.2.32
+- 10.0.2.35
+- kubem1
+- kubem2
+- kubem
 - 127.0.0.1
 nodeRegistration:
   name: "{{ ansible_hostname }}"
 certificatesDir: "/etc/kubernetes/pki"
-controlPlaneEndpoint: "{{ kubemastervip }}:6444"
+controlPlaneEndpoint: "10.0.2.35:6444"
 etcd:
   external:
     endpoints:
-{% for node in groups['kubemasters'] %}
-    - "http://{{ hostvars[node].ansible_default_ipv4.address }}:2379"
-{% endfor %}
+    - "http://10.0.2.31:2379"
+    - "http://10.0.2.32:2379"
+    - "http://10.0.2.15:2379"
 networking:
   podSubnet: "10.100.0.0/24"
 apiServerExtraArgs:

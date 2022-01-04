@@ -1,0 +1,5 @@
+--- 
+- hosts: kubemasters
+  tasks:
+    - name: Copy config.yml to run kubeadm init command
+      template: src=config-kubeadm.j2 dest=/tmp/config.yml 

@@ -4,12 +4,5 @@ directories_to_create:
    - /app/etcd/etcd
    - /app/etcd/ssl
 
-ethinsterface: enp0s3
-kubemastervip: 10.0.2.35
-keep_pass: 23a1dd6527cc347
-kubemaster:
-        - 10.0.2.31
-        - 10.0.2.32
-
-kubertenes_version: 1.23.1
+#kubertenes_version: 1.23.1
 # vars file for roles/kubeprereq

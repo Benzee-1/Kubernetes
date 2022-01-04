@@ -19,7 +19,7 @@ services:
       --initial-advertise-peer-urls=http://{{ ansible_default_ipv4.address }}:2380 \
       --initial-cluster=
 {%- for host in groups['etcdmembers'] -%}
-  {{ hostvars[host]['ansible_hostname'] }}=http://{{ hostvars[host]['ansible_ens160']['ipv4']['address'] }}:2380{{ "," if not loop.last else " \\" }}
+  {{ hostvars[host]['ansible_hostname'] }}=http://{{ hostvars[host]['ansible_enp0s3']['ipv4']['address'] }}:2380{{ "," if not loop.last else " \\" }}
 {%- endfor %} 
       --initial-cluster-token=95eba8edf6fc958af490c7fd0eda5e9e \
       --initial-cluster-state=new" ]

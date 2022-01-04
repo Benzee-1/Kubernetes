@@ -6,22 +6,19 @@ global_defs {
     }
 }
 vrrp_script check_haproxy {
-     script "killall -0 haproxy"
+     script "/usr/bin/curl -k {{ haproxy_initila_check }}"
      interval 3
      timeout 9
      fall 2
      rise 2
 }
 vrrp_instance {{ haproxy_instance }}IPv4 {
-{% if ansible_hostname == "skubem1" %}
+{% if ansible_hostname == "kubem1" %}
     state  MASTER
     priority 150
-{% elif ansible_hostname == "skubem2" %}
+{% elif ansible_hostname == "kubem2" %}
     state  BACKUP
     priority 145
-{% elif ansible_hostname == "skubem3" %}
-    state  BACKUP
-    priority 140
 {% endif %}
     interface {{ ethinsterface }}
     virtual_router_id 50

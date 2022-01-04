@@ -3,7 +3,7 @@ Done: Create /app/kubernetes/ssl on all nodes
 Done: create : kubernetes.pem, kubernetes-key.pem, ca.pem
 Done: Copy these certs vers /etc/kubernetes/pki
 Todo: autocreation of docker-compose.yam for etcd cluster j2
-
+Done : Add all node hostnames to /etc/hosts
 Done: useradd -r -s /sbin/nologin -g keepalived_script -M keepalived_script
 Todo: manage keepalived.conf
 Check
@@ -53,7 +53,12 @@ Copy pki dir to the other masters
 scp -r /etc/kubernetes/pki root@kubem2:~
 scp -r /etc/kubernetes/pki root@kubem3:~
 
+copy pki to /etc/kubernetes/pki of the second master
+run kubeadm init on the second master
 
+Once all pods are running
+Download calico.yml version v3.21
+Put IP_AUTODETECTION_METHOD to "can-reach=8.8.8.8"
 
 # Adding this line to check github push syncro
 # Second test

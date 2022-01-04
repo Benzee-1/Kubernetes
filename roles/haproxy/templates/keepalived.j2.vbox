@@ -13,15 +13,12 @@ vrrp_script check_haproxy {
      rise 2
 }
 vrrp_instance {{ haproxy_instance }}IPv4 {
-{% if ansible_hostname == "skubem1" %}
+{% if ansible_hostname == "kubem1" %}
     state  MASTER
     priority 150
-{% elif ansible_hostname == "skubem2" %}
+{% elif ansible_hostname == "kubem2" %}
     state  BACKUP
     priority 145
-{% elif ansible_hostname == "skubem3" %}
-    state  BACKUP
-    priority 140
 {% endif %}
     interface {{ ethinsterface }}
     virtual_router_id 50

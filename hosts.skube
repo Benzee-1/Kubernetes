@@ -1,6 +1,7 @@
 [all]
 10.118.1.9 ansible_connexion=ssh  ansible_user=root
 10.118.1.8 ansible_connexion=ssh  ansible_user=root
+10.118.1.11 ansible_connexion=ssh  ansible_user=root
 10.118.1.12 ansible_connexion=ssh  ansible_user=root
 10.118.1.7  ansible_connexion=ssh  ansible_user=root
 
@@ -17,3 +18,15 @@
 [kubeworkers]
 10.118.1.12 ansible_connexion=ssh  ansible_user=root
 10.118.1.7  ansible_connexion=ssh  ansible_user=root
+
+[kubenodes]
+10.118.1.9 ansible_connexion=ssh  ansible_user=root
+10.118.1.8 ansible_connexion=ssh  ansible_user=root
+10.118.1.11 ansible_connexion=ssh  ansible_user=root
+10.118.1.12 ansible_connexion=ssh  ansible_user=root
+10.118.1.7  ansible_connexion=ssh  ansible_user=root
+
+[haproxymembers]
+10.118.1.9 ansible_connexion=ssh  ansible_user=root
+10.118.1.8 ansible_connexion=ssh  ansible_user=root
+10.118.1.11 ansible_connexion=ssh  ansible_user=root

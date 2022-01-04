@@ -5,6 +5,16 @@ kube_packages:
     - kubeadm={{ kubernetes_version }}-00
     - kubelet={{ kubernetes_version }}-00
     - kubectl={{ kubernetes_version }}-00
-kubemastervip: 10.0.2.35
-apiservercount: 2
+kubemastervip: 10.118.1.200
+apiservercount: 3
 nodeworkdir: /app
+docker_compose_version: 1.27.3
+ethinsterface: ens160
+docker_compose_url: https://github.com/docker/compose/releases/download/{{ docker_compose_version }}/docker-compose-Linux-x86_64
+# --------------------------------
+ethinsterface_vmwr: ens160
+ethinsterface_vbox: enp0s3
+kubemastervip_vbox: 10.0.2.35
+kubemastervip_vmwr: 10.118.1.200
+apiservercount_vbox: 2
+apiservercount_vmwr: 3

@@ -6,7 +6,7 @@ systemctl restart kubelet
 
 rm -r -f /etc/kubernetes/* /var/lib/kubelet/*
 rm -rf /etc/cni /etc/kubernetes /var/lib/dockershim /var/lib/kubelet /var/run/kubernetes ~/.kube/*
-apt list i --installed | grep kube 
+apt list --installed | grep kube 
 
-docker stop $(docker ps -a|grep kube |awk '{print $1}') ; docker rm $(docker ps -a|grep kube |awk '{print $1}')
+#docker stop $(docker ps -a|grep kube |awk '{print $1}') ; docker rm $(docker ps -a|grep kube |awk '{print $1}')
 docker rm -f `docker ps -a | grep "k8s_" | awk '{print $1}'`
