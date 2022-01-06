@@ -1,0 +1,17 @@
+[all]
+10.118.1.20 ansible_connexion=ssh  ansible_user=root
+
+[kubenodes]
+10.118.1.20 ansible_connexion=ssh  ansible_user=root
+
+[kubemasters]
+10.118.1.20 ansible_connexion=ssh  ansible_user=root
+
+[kubeworkers]
+10.118.1.20 ansible_connexion=ssh  ansible_user=root
+
+[etcdmembers]
+10.118.1.20 ansible_connexion=ssh  ansible_user=root
+
+[haproxymembers]
+10.118.1.20 ansible_connexion=ssh  ansible_user=root

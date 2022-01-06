@@ -1,0 +1,20 @@
+---
+- name: Install nfs-common
+  apt:
+    name: nfs-common
+    state: latest
+    update_cache: yes
+    force_apt_get: yes
+
+- name: Create nfs client directories /nfs/kube 
+  file:
+    path: /nfs/kube
+    state: directory
+    recurse: yes
+
+- name: Create nfs client directories /nfs/data
+  file:
+    path: /nfs/data
+    state: directory
+    recurse: yes
+# tasks file for roles/nfs

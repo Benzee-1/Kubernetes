@@ -1,0 +1,4 @@
+---
+- hosts: kubeworkers
+  roles:
+    - nfs
